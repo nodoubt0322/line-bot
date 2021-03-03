@@ -1,5 +1,7 @@
 var linebot = require('linebot');
 var express = require('express');
+const GphApiClient = require("giphy-js-sdk-core");
+const giphy = GphApiClient("QTT424cEg6KX2IOv1KJ6mCKnTWOmTMhI");
 
 var bot = linebot({
   channelId: "1655718134",
@@ -8,7 +10,35 @@ var bot = linebot({
 });
 
 bot.on('message', function(event) {
-  console.log(event); //把收到訊息的 event 印出來看看
+  if ((event.message.type = "text")) {
+    var msg = event.message.text;
+    if (message.content.startsWith("!圖片")) {
+      giphy.search("gifs", { q: content }).then((res) => {
+        const { length } = res.data;
+        const index = Math.floor(Math.random() * length) + 1;
+        message.channel.send({ files: [res.data[index].images.fixed_height.url] });
+      });
+    }
+    event
+      .reply(msg)
+      .then(function (data) {
+        // success
+        console.log(msg);
+      })
+      .catch(function (error) {
+        // error
+        console.log("error");
+      });
+  }
+
+  const content = encodeURI(message.content.replace("!圖片 ", "")) || "fail";
+  if (message.content.startsWith("!圖片")) {
+    giphy.search("gifs", { q: content }).then((res) => {
+      const { length } = res.data;
+      const index = Math.floor(Math.random() * length) + 1;
+      message.channel.send({ files: [res.data[index].images.fixed_height.url] });
+    });
+  }
 });
 
 const app = express();
