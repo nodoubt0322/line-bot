@@ -19,7 +19,7 @@ bot.on("message", function (event) {
         const { length } = res.data;
         const index = Math.floor(Math.random() * length) + 1;
         const imgUrl = res.data[index].images.fixed_height.url
-        const imgObj = { type:'image', originalContentUrl: imgUrl, previewImageUrl:imgUrl }
+        const imgObj = { type:'video', originalContentUrl: imgUrl, previewImageUrl:imgUrl }
         console.log(imgObj);
         event.reply(imgObj)
       });
