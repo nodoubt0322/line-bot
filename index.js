@@ -10,6 +10,7 @@ var bot = linebot({
 });
 
 bot.on("message", function (event) {
+  console.log(event);
   if ((event.message.type = "text")) {
     var msg = event.message.text;
     if (msg.startsWith("!img")) {
@@ -19,6 +20,7 @@ bot.on("message", function (event) {
         const index = Math.floor(Math.random() * length) + 1;
         const imgUrl = res.data[index].images.fixed_height.url
         const imgObj = { type:'image', originalContentUrl: imgUrl, previewImageUrl:imgUrl }
+        console.log(imgObj);
         event.reply(imgObj)
       });
     }
