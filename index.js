@@ -17,8 +17,8 @@ bot.on("message", function (event) {
       giphy.search("gifs", { q: content }).then((res) => {
         const { length } = res.data;
         const index = Math.floor(Math.random() * length) + 1;
-        const imgUrl = res.data[index].images.fixed_height.url
-        const imgObj = { type:'video', originalContentUrl: imgUrl, previewImageUrl:imgUrl }
+        const { url, mp4 } = res.data[index].images.fixed_height;
+        const imgObj = { type: "video", originalContentUrl: mp4, previewImageUrl: url };
         event.reply(imgObj)
       });
     }
