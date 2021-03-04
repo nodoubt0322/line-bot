@@ -18,6 +18,8 @@ bot.on("message", function (event) {
         const { length } = res.data;
         const index = Math.floor(Math.random() * length) + 1;
         const { url, mp4 } = res.data[index].images.fixed_height;
+        console.log(url);
+        console.log(mp4);
         const imgObj = { type: "video", originalContentUrl: mp4, previewImageUrl: url };
         event.reply(imgObj)
       });
