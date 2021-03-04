@@ -9,35 +9,20 @@ var bot = linebot({
   channelAccessToken: "x4b/37bMUW0JwD8WrGR4u0cCaNI2dmAVXhJMAcYS6ZKnpTNPShbDq9q4OIpR+usVt0gh9XQyCjdv0N1VSU9HfbnfrWfe30fng4jKQ5TKElugD4VDAYX+YbgX6FGOy5G+2IX3QGAqjoSpAW2kIJDzKQdB04t89/1O/w1cDnyilFU=",
 });
 
-bot.on('message', function(event) {
+bot.on("message", function (event) {
   if ((event.message.type = "text")) {
     var msg = event.message.text;
-    if (message.content.startsWith("!圖片")) {
+    if (msg.startsWith("!img")) {
+      const content = encodeURI(msg.replace("!img ", "")) || "fail";
       giphy.search("gifs", { q: content }).then((res) => {
         const { length } = res.data;
         const index = Math.floor(Math.random() * length) + 1;
-        message.channel.send({ files: [res.data[index].images.fixed_height.url] });
+        const imgUrl = res.data[index].images.fixed_height.url
+        const imgObj = { type:'image', originalContentUrl: imgUrl, previewImageUrl:imgUrl }
+        event.reply(imgObj)
       });
     }
-    event
-      .reply(msg)
-      .then(function (data) {
-        // success
-        console.log(msg);
-      })
-      .catch(function (error) {
-        // error
-        console.log("error");
-      });
-  }
-
-  const content = encodeURI(message.content.replace("!圖片 ", "")) || "fail";
-  if (message.content.startsWith("!圖片")) {
-    giphy.search("gifs", { q: content }).then((res) => {
-      const { length } = res.data;
-      const index = Math.floor(Math.random() * length) + 1;
-      message.channel.send({ files: [res.data[index].images.fixed_height.url] });
-    });
+    
   }
 });
 
@@ -45,7 +30,6 @@ const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
-//因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
 var server = app.listen(process.env.PORT || 8080, function() {
   var port = server.address().port;
   console.log("App now running on port", port);
